@@ -1,85 +1,79 @@
-// Wait for DOM to load
-document.addEventListener("DOMContentLoaded", function () {
-  // Get video element
-  const video = document.getElementById("player1");
+// Declare video variable
+var video;
 
-  // Get buttons and controls
-  const playButton = document.getElementById("play");
-  const pauseButton = document.getElementById("pause");
-  const slowerButton = document.getElementById("slower");
-  const fasterButton = document.getElementById("faster");
-  const skipButton = document.getElementById("skip");
-  const muteButton = document.getElementById("mute");
-  const volumeSlider = document.getElementById("slider");
-  const volumeDisplay = document.getElementById("volume");
-  const vintageButton = document.getElementById("vintage");
-  const originalButton = document.getElementById("orig");
+// Wait for the window to load
+window.addEventListener("load", function () {
+  console.log("Good job opening the window");
+
+  // Get the video element
+  video = document.getElementById("player1");
 
   // Play video
-  playButton.addEventListener("click", function () {
+  document.querySelector("#play").addEventListener("click", function () {
+    console.log("Play Video");
     video.play();
-    console.log("Video playing...");
+    document.getElementById("volume").textContent = `${video.volume * 100}%`; // Update volume display
   });
 
   // Pause video
-  pauseButton.addEventListener("click", function () {
+  document.querySelector("#pause").addEventListener("click", function () {
+    console.log("Pause Video");
     video.pause();
-    console.log("Video paused...");
   });
 
   // Slow down video playback
-  slowerButton.addEventListener("click", function () {
+  document.querySelector("#slower").addEventListener("click", function () {
     if (video.playbackRate > 0.5) {
       video.playbackRate -= 0.1;
-      console.log(`Playback rate slowed to ${video.playbackRate}`);
+      console.log(`Playback rate slowed to ${video.playbackRate.toFixed(1)}x`);
     } else {
       console.log("Cannot slow down further.");
     }
   });
 
   // Speed up video playback
-  fasterButton.addEventListener("click", function () {
+  document.querySelector("#faster").addEventListener("click", function () {
     if (video.playbackRate < 2) {
       video.playbackRate += 0.1;
-      console.log(`Playback rate increased to ${video.playbackRate}`);
+      console.log(`Playback rate increased to ${video.playbackRate.toFixed(1)}x`);
     } else {
       console.log("Cannot speed up further.");
     }
   });
 
   // Skip ahead in the video
-  skipButton.addEventListener("click", function () {
+  document.querySelector("#skip").addEventListener("click", function () {
     if (video.currentTime + 10 < video.duration) {
       video.currentTime += 10;
     } else {
       video.currentTime = 0; // Restart if skipping past the end
     }
-    console.log(`Skipped ahead, current time: ${video.currentTime}`);
+    console.log(`Skipped ahead, current time: ${video.currentTime.toFixed(2)} seconds`);
   });
 
   // Mute/unmute video
-  muteButton.addEventListener("click", function () {
+  document.querySelector("#mute").addEventListener("click", function () {
     video.muted = !video.muted; // Toggle mute state
-    muteButton.textContent = video.muted ? "Unmute" : "Mute";
+    this.textContent = video.muted ? "Unmute" : "Mute";
     console.log(`Video muted: ${video.muted}`);
   });
 
   // Adjust volume using slider
-  volumeSlider.addEventListener("input", function () {
-    const volumeValue = volumeSlider.value / 100; // Convert to range [0,1]
+  document.querySelector("#slider").addEventListener("input", function () {
+    const volumeValue = this.value / 100; // Convert slider value to range [0,1]
     video.volume = volumeValue;
-    volumeDisplay.textContent = `${volumeSlider.value}%`; // Update display
+    document.getElementById("volume").textContent = `${this.value}%`; // Update volume display
     console.log(`Volume set to ${volumeValue}`);
   });
 
   // Apply "Old School" style
-  vintageButton.addEventListener("click", function () {
+  document.querySelector("#vintage").addEventListener("click", function () {
     video.classList.add("vintage"); // Add CSS class for old-school style
     console.log("Vintage style applied.");
   });
 
   // Revert to original style
-  originalButton.addEventListener("click", function () {
+  document.querySelector("#orig").addEventListener("click", function () {
     video.classList.remove("vintage"); // Remove CSS class for old-school style
     console.log("Original style applied.");
   });
